@@ -1,0 +1,437 @@
+{
+  "resource_version": 13,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "cic_graph",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "account_type"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "accounts",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "account_type",
+                    "table": {
+                      "schema": "public",
+                      "name": "accounts"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "accounts"
+            },
+            "object_relationships": [
+              {
+                "name": "accountTypeByAccountType",
+                "using": {
+                  "foreign_key_constraint_on": "account_type"
+                }
+              },
+              {
+                "name": "marketplace",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "account",
+                    "table": {
+                      "schema": "public",
+                      "name": "marketplaces"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_identifier"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services_ratings",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "rating_by",
+                    "table": {
+                      "schema": "public",
+                      "name": "services_ratings"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "vouchers",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "issuer",
+                    "table": {
+                      "schema": "public",
+                      "name": "vouchers"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "vouchersBySinkAddress",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "sink_address",
+                    "table": {
+                      "schema": "public",
+                      "name": "vouchers"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "gender_type"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "personal_informations",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "gender",
+                    "table": {
+                      "schema": "public",
+                      "name": "personal_information"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "interface_type"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "users",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "interface_type",
+                    "table": {
+                      "schema": "public",
+                      "name": "users"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "marketplaces"
+            },
+            "object_relationships": [
+              {
+                "name": "accountByAccount",
+                "using": {
+                  "foreign_key_constraint_on": "account"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "marketplace",
+                    "table": {
+                      "schema": "public",
+                      "name": "services"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "personal_information"
+            },
+            "object_relationships": [
+              {
+                "name": "gender_type",
+                "using": {
+                  "foreign_key_constraint_on": "gender"
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_identifier"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "service_accepted_payment"
+            },
+            "object_relationships": [
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_accepted_payment",
+                    "table": {
+                      "schema": "public",
+                      "name": "services"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "service_type"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_type",
+                    "table": {
+                      "schema": "public",
+                      "name": "services"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "services"
+            },
+            "object_relationships": [
+              {
+                "name": "marketplaceByMarketplace",
+                "using": {
+                  "foreign_key_constraint_on": "marketplace"
+                }
+              },
+              {
+                "name": "serviceAcceptedPaymentByServiceAcceptedPayment",
+                "using": {
+                  "foreign_key_constraint_on": "service_accepted_payment"
+                }
+              },
+              {
+                "name": "serviceTypeByServiceType",
+                "using": {
+                  "foreign_key_constraint_on": "service_type"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services_images",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "services_images"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "services_ratings",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "services_ratings"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "services_images"
+            },
+            "object_relationships": [
+              {
+                "name": "service",
+                "using": {
+                  "foreign_key_constraint_on": "service_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "services_ratings"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "rating_by"
+                }
+              },
+              {
+                "name": "service",
+                "using": {
+                  "foreign_key_constraint_on": "service_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "users"
+            },
+            "object_relationships": [
+              {
+                "name": "interfaceTypeByInterfaceType",
+                "using": {
+                  "foreign_key_constraint_on": "interface_type"
+                }
+              },
+              {
+                "name": "personal_information",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_identifier",
+                    "table": {
+                      "schema": "public",
+                      "name": "personal_information"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "accounts",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_identifier",
+                    "table": {
+                      "schema": "public",
+                      "name": "accounts"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "voucher_endorsements"
+            },
+            "object_relationships": [
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "vouchers"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "issuer"
+                }
+              },
+              {
+                "name": "accountBySinkAddress",
+                "using": {
+                  "foreign_key_constraint_on": "sink_address"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "service_accepted_payments",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "schema": "public",
+                      "name": "service_accepted_payment"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_endorsements",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "schema": "public",
+                      "name": "voucher_endorsements"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": false,
+            "database_url": "postgres://postgres:postgres@localhost:5432/cic_meta_graph",
+            "isolation_level": "read-committed"
+          }
+        }
+      }
+    ]
+  }
+}
