@@ -20,8 +20,6 @@ export const login: IFieldResolver<
       })
 
       if (verificationResult.data.address === address) {
-        await app.redis.del(address)
-
         // TODO: fetch UID from Graph
         const jwtToken = await app.jwt.sign({
           uid: 1,
@@ -41,6 +39,8 @@ export const login: IFieldResolver<
     } catch (error) {
       app.log.error(error)
       throw new Mercurius.ErrorWithProps('Bad signature/message')
+    } finally {
+      await app.redis.del(address)
     }
   } else {
     throw new Mercurius.ErrorWithProps('Challenge expired')
