@@ -24,9 +24,16 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: admin
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
     ports:
       - '8080:8080'
-
+  redis:
+    image: redis:6-alpine
+    restart: unless-stopped
+    network_mode: "host"
+    command: redis-server --loglevel warning
+    ports:
+      - '6379:6379'
 volumes:
   cic-meta-graph-db:
     driver: local
