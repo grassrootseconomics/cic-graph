@@ -8,6 +8,7 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
 import { config } from './config'
 import * as graphql from './graphql/graphql'
+import hasuraPlugin from './plugins/hasura'
 
 const redisClient = new Redis({
   host: config.redis.host,
@@ -35,6 +36,11 @@ async function startServer() {
       expiresIn: config.jwt.expiry,
       iss: 'https://auth.grassecon.org',
     },
+  })
+
+  app.register(hasuraPlugin, {
+    endpoint: config.hasura.endpoint,
+    backendToken: config.hasura.backendToken,
   })
 
   app.register(mercurius, {

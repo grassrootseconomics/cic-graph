@@ -16,4 +16,10 @@ export const config = {
       process.env.JWT_PRIV_KEY ??
       '-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIEsykdb59fsltF97KUQyQsYIn5a9v/n5jHuxPcisJXeg\n-----END PRIVATE KEY-----',
   },
+  hasura: {
+    endpoint: process.env.HASURA_ENDPOINT ?? 'http://localhost:8080/v1/graphql',
+    backendToken:
+      process.env.HASURA_BACKEND_TOKEN ??
+      'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJodHRwczovL2dyYXBoLmdyYXNzZWNvbi5vcmciOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJiYWNrZW5kIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6ImJhY2tlbmQifSwiaXNzIjoiaHR0cHM6Ly9hdXRoLmdyYXNzZWNvbi5vcmciLCJpYXQiOjE2NTg0OTgzMjMsImV4cCI6MTcyMTU3MDMyM30.QMGWKxMy8RS8YBY8sJjS2H5BdE-2WXwE4TdGk6E7fm7_BoFLm4A1r96BJ1uMydp10M6gn-s3tXAGowX5pE7gDg',
+  },
 }

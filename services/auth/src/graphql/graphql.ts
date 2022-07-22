@@ -12,7 +12,8 @@ const schema = `
   }
 
   type LoginResponse {
-    token: String!
+    status: String!
+    token: String
   }
 
   type Query {

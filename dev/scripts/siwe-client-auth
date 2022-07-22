@@ -20,6 +20,7 @@ const graphql = {
     return gql`query login {
     login(message: "${message}", signature: "${signature}", address: "${ethKeyPair.public}") {
         token
+        status
       }
     }`;
   },
@@ -60,8 +61,7 @@ async function main() {
       )
     );
 
-    console.log(rangi.cyan("JWT Token:"));
-    console.log(rangi.green(requestLogin.login.token));
+    console.log(requestLogin.login);
   } catch (error) {
     console.error(error);
   }
