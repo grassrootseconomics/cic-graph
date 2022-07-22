@@ -1,10 +1,10 @@
 {
-  "resource_version": 49,
+  "resource_version": 57,
   "metadata": {
     "version": 3,
     "sources": [
       {
-        "name": "cic-meta-graph",
+        "name": "cic_graph",
         "kind": "postgres",
         "tables": [
           {
@@ -73,18 +73,6 @@
                 }
               },
               {
-                "name": "voucher_audits",
-                "using": {
-                  "foreign_key_constraint_on": {
-                    "column": "auditor",
-                    "table": {
-                      "schema": "public",
-                      "name": "voucher_audits"
-                    }
-                  }
-                }
-              },
-              {
                 "name": "voucher_backers",
                 "using": {
                   "foreign_key_constraint_on": {
@@ -92,6 +80,18 @@
                     "table": {
                       "schema": "public",
                       "name": "voucher_backers"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_certifications",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "certifier",
+                    "table": {
+                      "schema": "public",
+                      "name": "voucher_certifications"
                     }
                   }
                 }
@@ -111,6 +111,19 @@
             ],
             "insert_permissions": [
               {
+                "role": "anonymous",
+                "permission": {
+                  "check": {},
+                  "set": {
+                    "user_identifier": "x-hasura-User-Id"
+                  },
+                  "columns": [
+                    "account_type",
+                    "blockchain_address"
+                  ]
+                }
+              },
+              {
                 "role": "user",
                 "permission": {
                   "check": {
@@ -119,19 +132,42 @@
                     }
                   },
                   "set": {
-                    "user_identifier": "x-hasura-Id"
+                    "user_identifier": "x-hasura-User-Id"
                   },
-                  "columns": ["account_type", "blockchain_address"]
+                  "columns": [
+                    "account_type",
+                    "blockchain_address"
+                  ]
                 }
               }
             ],
             "select_permissions": [
               {
-                "role": "user",
+                "role": "anonymous",
                 "permission": {
-                  "columns": ["account_type", "blockchain_address"],
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at"
+                  ],
                   "filter": {},
                   "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at"
+                  ],
+                  "filter": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "limit": 250
                 }
               }
             ],
@@ -139,7 +175,10 @@
               {
                 "role": "user",
                 "permission": {
-                  "columns": ["account_type", "blockchain_address"],
+                  "columns": [
+                    "account_type",
+                    "blockchain_address"
+                  ],
                   "filter": {
                     "user_identifier": {
                       "_eq": "X-Hasura-User-Id"
@@ -151,20 +190,7 @@
                     }
                   },
                   "set": {
-                    "user_identifier": "x-hasura-Id"
-                  }
-                }
-              }
-            ],
-            "delete_permissions": [
-              {
-                "role": "user",
-                "permission": {
-                  "backend_only": false,
-                  "filter": {
-                    "user_identifier": {
-                      "_eq": "X-Hasura-User-Id"
-                    }
+                    "user_identifier": "x-hasura-User-Id"
                   }
                 }
               }
@@ -245,19 +271,22 @@
                 "permission": {
                   "check": {
                     "account": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura-Account-Id"
                     }
                   },
                   "set": {
-                    "account": "x-hasura-Id"
+                    "account": "x-hasura-Account-Id"
                   },
-                  "columns": ["marketplace_name"]
+                  "columns": [
+                    "created_at",
+                    "marketplace_name"
+                  ]
                 }
               }
             ],
             "select_permissions": [
               {
-                "role": "user",
+                "role": "anonymous",
                 "permission": {
                   "columns": [
                     "account",
@@ -268,25 +297,40 @@
                   "filter": {},
                   "limit": 100
                 }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "account",
+                    "id",
+                    "marketplace_name",
+                    "created_at"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
               }
             ],
             "update_permissions": [
               {
                 "role": "user",
                 "permission": {
-                  "columns": ["marketplace_name"],
+                  "columns": [
+                    "marketplace_name"
+                  ],
                   "filter": {
                     "account": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura-Account-Id"
                     }
                   },
                   "check": {
                     "account": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura-Account-Id"
                     }
                   },
                   "set": {
-                    "account": "x-hasura-Id"
+                    "account": "x-hasura-Account-Id"
                   }
                 }
               }
@@ -321,7 +365,7 @@
                     }
                   },
                   "set": {
-                    "user_identifier": "x-hasura-Id"
+                    "user_identifier": "x-hasura-User-Id"
                   },
                   "columns": [
                     "family_name",
@@ -371,26 +415,9 @@
                       "_eq": "X-Hasura-User-Id"
                     }
                   },
-                  "check": {
-                    "user_identifier": {
-                      "_eq": "X-Hasura-User-Id"
-                    }
-                  },
+                  "check": null,
                   "set": {
-                    "user_identifier": "x-hasura-Id"
-                  }
-                }
-              }
-            ],
-            "delete_permissions": [
-              {
-                "role": "user",
-                "permission": {
-                  "backend_only": false,
-                  "filter": {
-                    "user_identifier": {
-                      "_eq": "X-Hasura-User-Id"
-                    }
+                    "user_identifier": "x-hasura-User-Id"
                   }
                 }
               }
@@ -431,22 +458,39 @@
                     "services": {
                       "marketplaceByMarketplace": {
                         "account": {
-                          "_eq": "X-Hasura-User-Id"
+                          "_eq": "X-Hasura-Account-Id"
                         }
                       }
                     }
                   },
-                  "columns": ["price", "voucher"]
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ]
                 }
               }
             ],
             "select_permissions": [
               {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
                 "role": "user",
                 "permission": {
-                  "columns": ["price", "voucher"],
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
                   "filter": {},
-                  "limit": 100,
+                  "limit": 250,
                   "allow_aggregations": true
                 }
               }
@@ -455,12 +499,15 @@
               {
                 "role": "user",
                 "permission": {
-                  "columns": ["price", "voucher"],
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
                   "filter": {
                     "services": {
                       "marketplaceByMarketplace": {
                         "account": {
-                          "_eq": "X-Hasura-User-Id"
+                          "_eq": "X-Hasura-Account-Id"
                         }
                       }
                     }
@@ -469,7 +516,7 @@
                     "services": {
                       "marketplaceByMarketplace": {
                         "account": {
-                          "_eq": "X-Hasura-User-Id"
+                          "_eq": "X-Hasura-Account-Id"
                         }
                       }
                     }
@@ -486,7 +533,7 @@
                     "services": {
                       "marketplaceByMarketplace": {
                         "account": {
-                          "_eq": "X-Hasura-User-Id"
+                          "_eq": "X-Hasura-Account-Id"
                         }
                       }
                     }
@@ -574,7 +621,7 @@
                   "check": {
                     "marketplaceByMarketplace": {
                       "account": {
-                        "_eq": "X-Hasura-User-Id"
+                        "_eq": "X-Hasura-Account_Id"
                       }
                     }
                   },
@@ -591,20 +638,39 @@
             ],
             "select_permissions": [
               {
-                "role": "user",
+                "role": "anonymous",
                 "permission": {
                   "columns": [
-                    "created_at",
-                    "geo",
-                    "location_name",
+                    "service_available",
+                    "id",
                     "marketplace",
                     "service_accepted_payment",
-                    "service_available",
+                    "geo",
+                    "location_name",
                     "service_description",
-                    "service_type"
+                    "service_type",
+                    "created_at"
                   ],
                   "filter": {},
                   "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "service_available",
+                    "id",
+                    "marketplace",
+                    "service_accepted_payment",
+                    "geo",
+                    "location_name",
+                    "service_description",
+                    "service_type",
+                    "created_at"
+                  ],
+                  "filter": {},
+                  "limit": 250
                 }
               }
             ],
@@ -613,7 +679,6 @@
                 "role": "user",
                 "permission": {
                   "columns": [
-                    "created_at",
                     "location_name",
                     "marketplace",
                     "service_accepted_payment",
@@ -624,14 +689,14 @@
                   "filter": {
                     "marketplaceByMarketplace": {
                       "account": {
-                        "_eq": "X-Hasura-User-Id"
+                        "_eq": "X-Hasura-Account_Id"
                       }
                     }
                   },
                   "check": {
                     "marketplaceByMarketplace": {
                       "account": {
-                        "_eq": "X-Hasura-User-Id"
+                        "_eq": "X-Hasura-Account_Id"
                       }
                     }
                   }
@@ -646,7 +711,7 @@
                   "filter": {
                     "marketplaceByMarketplace": {
                       "account": {
-                        "_eq": "X-Hasura-User-Id"
+                        "_eq": "X-Hasura-Account_Id"
                       }
                     }
                   }
@@ -669,11 +734,44 @@
             ],
             "select_permissions": [
               {
-                "role": "user",
+                "role": "anonymous",
                 "permission": {
-                  "columns": ["service_id", "url_pointer"],
+                  "columns": [
+                    "id",
+                    "service_id",
+                    "url_pointer"
+                  ],
                   "filter": {},
                   "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "service_id",
+                    "url_pointer"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "backend_only": false,
+                  "filter": {
+                    "service": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             ]
@@ -703,24 +801,44 @@
                 "permission": {
                   "check": {
                     "rating_by": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura_Account-Id"
                     }
                   },
                   "set": {
-                    "rating_by": "x-hasura-Id"
+                    "rating_by": "x-hasura-Account-Id"
                   },
-                  "columns": ["score", "service_id"]
+                  "columns": [
+                    "score",
+                    "service_id"
+                  ]
                 }
               }
             ],
             "select_permissions": [
               {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "rating_by",
+                    "score",
+                    "service_id"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
                 "role": "user",
                 "permission": {
-                  "columns": ["score", "service_id"],
+                  "columns": [
+                    "created_at",
+                    "rating_by",
+                    "score",
+                    "service_id"
+                  ],
                   "filter": {},
-                  "limit": 100,
-                  "allow_aggregations": true
+                  "limit": 250
                 }
               }
             ],
@@ -728,19 +846,22 @@
               {
                 "role": "user",
                 "permission": {
-                  "columns": ["score", "service_id"],
+                  "columns": [
+                    "score",
+                    "service_id"
+                  ],
                   "filter": {
                     "rating_by": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura_Account-Id"
                     }
                   },
                   "check": {
                     "rating_by": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura_Account-Id"
                     }
                   },
                   "set": {
-                    "rating_by": "x-hasura-Id"
+                    "rating_by": "x-hasura-Account-Id"
                   }
                 }
               }
@@ -752,7 +873,7 @@
                   "backend_only": false,
                   "filter": {
                     "rating_by": {
-                      "_eq": "X-Hasura-User-Id"
+                      "_eq": "X-Hasura_Account-Id"
                     }
                   }
                 }
@@ -803,7 +924,10 @@
                 "role": "anonymous",
                 "permission": {
                   "check": {},
-                  "columns": ["interface_identifier", "interface_type"]
+                  "columns": [
+                    "interface_identifier",
+                    "interface_type"
+                  ]
                 }
               }
             ],
@@ -812,7 +936,9 @@
                 "role": "user",
                 "permission": {
                   "columns": [
+                    "activated",
                     "created_at",
+                    "id",
                     "interface_identifier",
                     "interface_type"
                   ],
@@ -825,52 +951,27 @@
                 }
               }
             ],
-            "delete_permissions": [
-              {
-                "role": "user",
-                "permission": {
-                  "backend_only": false,
-                  "filter": {
-                    "id": {
-                      "_eq": "X-Hasura-User-Id"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "table": {
-              "schema": "public",
-              "name": "voucher_audits"
-            },
-            "object_relationships": [
-              {
-                "name": "account",
-                "using": {
-                  "foreign_key_constraint_on": "auditor"
-                }
-              },
-              {
-                "name": "voucherByVoucher",
-                "using": {
-                  "foreign_key_constraint_on": "voucher"
-                }
-              }
-            ],
-            "select_permissions": [
+            "update_permissions": [
               {
                 "role": "user",
                 "permission": {
                   "columns": [
-                    "auditor",
-                    "auditor_weight",
-                    "created_at",
-                    "url_pointer",
-                    "voucher"
+                    "interface_identifier"
                   ],
-                  "filter": {},
-                  "limit": 100
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "check": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "set": {
+                    "activated": "false",
+                    "id": "x-hasura-User-Id"
+                  }
                 }
               }
             ]
@@ -886,15 +987,86 @@
                 "using": {
                   "foreign_key_constraint_on": "backer"
                 }
+              },
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
               }
             ],
             "select_permissions": [
               {
-                "role": "user",
+                "role": "anonymous",
                 "permission": {
-                  "columns": ["backer", "voucher"],
+                  "columns": [
+                    "backer",
+                    "created_at",
+                    "voucher"
+                  ],
                   "filter": {},
                   "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "backer",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "voucher_certifications"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "certifier"
+                }
+              },
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "certificate_url_pointer",
+                    "certifier",
+                    "certifier_weight",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "certificate_url_pointer",
+                    "certifier",
+                    "certifier_weight",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 250
                 }
               }
             ]
@@ -926,19 +1098,51 @@
                 }
               },
               {
-                "name": "voucher_audits",
+                "name": "voucher_backers",
                 "using": {
                   "foreign_key_constraint_on": {
                     "column": "voucher",
                     "table": {
                       "schema": "public",
-                      "name": "voucher_audits"
+                      "name": "voucher_backers"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_certifications",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "schema": "public",
+                      "name": "voucher_certifications"
                     }
                   }
                 }
               }
             ],
             "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "active",
+                    "created_at",
+                    "demurrage_rate",
+                    "geo",
+                    "location_name",
+                    "sink_address",
+                    "supply",
+                    "symbol",
+                    "token_address",
+                    "voucher_description",
+                    "voucher_name"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
               {
                 "role": "user",
                 "permission": {
@@ -955,7 +1159,8 @@
                     "voucher_description",
                     "voucher_name"
                   ],
-                  "filter": {}
+                  "filter": {},
+                  "limit": 250
                 }
               }
             ]
@@ -963,8 +1168,8 @@
         ],
         "configuration": {
           "connection_info": {
-            "use_prepared_statements": false,
-            "database_url": "postgres://postgres:postgres@localhost:5432/cic_meta_graph",
+            "use_prepared_statements": true,
+            "database_url": "postgres://postgres:postgres@localhost:5432/cic_graph",
             "isolation_level": "read-committed"
           }
         }

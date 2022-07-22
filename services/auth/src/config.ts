@@ -8,6 +8,7 @@ export const config = {
     db: parseInt(process.env.REDIS_DB ?? '0'),
   },
   jwt: {
+    expiry: process.env.JWT_EXPIRY ?? '30d',
     public:
       process.env.JWT_PUB_KEY ??
       '-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAd+J5AqpZTDZIqyxke+bUJlQ8JZ7anWB9d0ZtcV9EoLs=\n-----END PUBLIC KEY-----',

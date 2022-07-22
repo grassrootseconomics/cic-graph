@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+const rangi = require("rangi");
+const { ethers } = require("ethers");
+const { SiweMessage } = require("siwe");
+const { request, gql } = require("graphql-request");
+
+const ethKeyPair = {
+  public: "0xC257b74D365ad48E0f1868Fdf87AcCE9Af322138",
+  private: "f54517e425d6f97d4c089007d9ade2a890ee02e9e0c0b335fb3442b39335cc9e",
+};
+
+const graphql = {
+  challenge: gql`mutation getChallenge {
+    getChallenge(address: "${ethKeyPair.public}") {
+      challenge
+    }
+  }`,
+  login: function (message, signature) {
+    return gql`query login {
+    login(message: "${message}", signature: "${signature}", address: "${ethKeyPair.public}") {
+        token
+      }
+    }`;
+  },
+};
+
+async function main() {
+  const signer = new ethers.Wallet(ethKeyPair.private);
+
+  const getChallenge = await request(
+    "http://localhost:5000/graphql",
+    graphql.challenge
+  );
+  const challenge = getChallenge.getChallenge.challenge;
+
+  const siweMessage = new SiweMessage({
+    domain: "localhost",
+    address: ethKeyPair.public,
+    statement: "Sign in with your GE Key",
+    uri: "http://localhost:5000",
+    version: "1",
+    chainId: "6060",
+    nonce: challenge,
+  });
+  const preparedMessage = siweMessage.prepareMessage();
+
+  const signature = await signer.signMessage(preparedMessage);
+  console.log(rangi.cyan("SIWE Message:"));
+  console.log(rangi.yellow(preparedMessage));
+  console.log(rangi.cyan("Ethereum Signature:"));
+  console.log(rangi.yellow(signature));
+
+  try {
+    const requestLogin = await request(
+      "http://localhost:5000/graphql",
+      graphql.login(
+        preparedMessage.replace(/(?:\r\n|\r|\n)/g, "\\n"),
+        signature
+      )
+    );
+
+    console.log(rangi.cyan("JWT Token:"));
+    console.log(rangi.green(requestLogin.login.token));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+main();

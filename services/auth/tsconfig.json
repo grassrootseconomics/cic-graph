@@ -12,8 +12,8 @@
     "outDir": "dist",
     "strict": true
   },
-  "exclude": ["*/node_modules", "*/build"],
-  "include": ["*/src/**/*"],
+  "exclude": ["node_modules", "build"],
+  "include": ["src/**/*"],
   "parserOptions": {
     "ecmaVersion": "2020",
     "sourceType": "module"

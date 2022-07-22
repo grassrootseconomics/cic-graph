@@ -23,10 +23,11 @@ export const login: IFieldResolver<
         // TODO: fetch UID from Graph
         const jwtToken = await app.jwt.sign({
           uid: 1,
-          'grassrootseconomics.org': {
+          'https://graph.grassecon.org': {
             'x-hasura-allowed-roles': ['anonymous', 'user'],
             'x-hasura-default-role': 'user',
-            'x-hasura-user-id': 1,
+            'x-hasura-user-id': '10',
+            'x-hasura-account-id': '4',
           },
         })
 

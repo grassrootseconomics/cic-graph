@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   interface_type TEXT REFERENCES interface_type(value) NOT NULL,
   interface_identifier TEXT UNIQUE NOT NULL CHECK (interface_identifier <> '' AND char_length(interface_identifier) <= 64),
+  activated BOOLEAN DEFAULT false,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -67,7 +68,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   user_identifier INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   account_type TEXT REFERENCES account_type(value) NOT NULL,
-  blockchain_address TEXT NOT NULL CHECK (blockchain_address <> '' AND char_length(blockchain_address) <= 64),
+  blockchain_address TEXT UNIQUE NOT NULL CHECK (blockchain_address <> '' AND char_length(blockchain_address) <= 64),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -103,13 +104,13 @@ CREATE TABLE IF NOT EXISTS voucher_backers (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- voucher audit related info
-CREATE TABLE IF NOT EXISTS voucher_audits (
+-- voucher audit/certifier related info
+CREATE TABLE IF NOT EXISTS voucher_certifications (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   voucher INT REFERENCES vouchers(id) NOT NULL,
-  auditor INT REFERENCES accounts(id) NOT NULL,
-  auditor_weight NUMERIC NOT NULL CHECK (auditor_weight > 0 AND auditor <= 10),
-  url_pointer TEXT NOT NULL CHECK (url_pointer <> '' AND char_length(url_pointer) <= 256),
+  certifier INT REFERENCES accounts(id) NOT NULL,
+  certifier_weight NUMERIC NOT NULL CHECK (certifier_weight > 0 AND certifier_weight <= 10),
+  certificate_url_pointer TEXT NOT NULL CHECK (certificate_url_pointer <> '' AND char_length(certificate_url_pointer) <= 256),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -153,7 +154,7 @@ CREATE TABLE IF NOT EXISTS services_ratings (
 
 DROP TABLE IF EXISTS
 services_ratings, services_images,services, services,
-service_accepted_payment, voucher_audits, voucher_backers
+service_accepted_payment, voucher_certifications, voucher_backers
 vouchers, marketplaces, accounts,
 personal_information, users;
 

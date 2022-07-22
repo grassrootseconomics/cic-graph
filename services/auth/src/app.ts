@@ -32,7 +32,8 @@ async function startServer() {
     },
     sign: {
       algorithm: 'EdDSA',
-      expiresIn: '30d',
+      expiresIn: config.jwt.expiry,
+      iss: 'https://auth.grassecon.org',
     },
   })
 

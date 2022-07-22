@@ -6,9 +6,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=cic_meta_graph
+      - POSTGRES_DB=cic_graph
     volumes:
-      - cic-meta-graph-db:/var/lib/postgresql/data
+      - cic-graph-db:/var/lib/postgresql/data
     ports:
       - '5432:5432'
   hasura:
@@ -18,13 +18,14 @@ services:
     depends_on:
       - postgres
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cic_meta_graph
-      PG_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cic_meta_graph
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cic_graph
+      PG_DATABASE_URL: postgres://postgres:postgres@localhost:5432/cic_graph
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: admin
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "Ed25519","key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAd+J5AqpZTDZIqyxke+bUJlQ8JZ7anWB9d0ZtcV9EoLs=\n-----END PUBLIC KEY-----","claims_namespace": "https://graph.grassecon.org","issuer": "https://auth.grassecon.org"}'
     ports:
       - '8080:8080'
   redis:
@@ -35,6 +36,6 @@ services:
     ports:
       - '6379:6379'
 volumes:
-  cic-meta-graph-db:
+  cic-graph-db:
     driver: local
   

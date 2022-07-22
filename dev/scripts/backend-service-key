@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const rangi = require("rangi");
+const { resolve } = require("path");
+const { readFileSync } = require("fs");
+const { createSigner } = require("fast-jwt");
+
+const privateKey = readFileSync(resolve(__dirname, "../private.pem"));
+const signSync = createSigner({
+  key: privateKey,
+  expiresIn: 63072000000,
+  iss: "https://auth.grassecon.org",
+});
+const token = signSync({
+  "https://graph.grassecon.org": {
+    "x-hasura-allowed-roles": ["backend"],
+    "x-hasura-default-role": "backend",
+  },
+});
+
+console.log(rangi.green(token));

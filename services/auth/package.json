@@ -1,9 +1,9 @@
 {
-  "name": "cic-meta-graph-auth",
+  "name": "cic-graph-auth",
   "version": "0.1.0",
-  "description": "Authentication service for GE",
+  "description": "Authentication service for CIC Graph",
   "main": "build/app.js",
-  "repository": "https://github.com/grassrootseconomics/cic-meta-graph.git",
+  "repository": "https://github.com/grassrootseconomics/cic-graph.git",
   "author": "Mohamed Sohail <mohamedsohailazim@gmail.com>",
   "license": "AGPL-3.0-or-later",
   "scripts": {
