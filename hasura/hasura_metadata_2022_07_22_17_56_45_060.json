@@ -1,5 +1,5 @@
 {
-  "resource_version": 57,
+  "resource_version": 87,
   "metadata": {
     "version": 3,
     "sources": [
@@ -114,12 +114,22 @@
                 "role": "anonymous",
                 "permission": {
                   "check": {},
-                  "set": {
-                    "user_identifier": "x-hasura-User-Id"
-                  },
                   "columns": [
                     "account_type",
-                    "blockchain_address"
+                    "blockchain_address",
+                    "user_identifier"
+                  ]
+                }
+              },
+              {
+                "role": "backend",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at",
+                    "user_identifier"
                   ]
                 }
               },
@@ -132,7 +142,8 @@
                     }
                   },
                   "set": {
-                    "user_identifier": "x-hasura-User-Id"
+                    "user_identifier": "x-hasura-User-Id",
+                    "account_type": "x-hasura-User-Id"
                   },
                   "columns": [
                     "account_type",
@@ -143,15 +154,16 @@
             ],
             "select_permissions": [
               {
-                "role": "anonymous",
+                "role": "backend",
                 "permission": {
                   "columns": [
+                    "id",
+                    "user_identifier",
                     "account_type",
                     "blockchain_address",
                     "created_at"
                   ],
-                  "filter": {},
-                  "limit": 100
+                  "filter": {}
                 }
               },
               {
@@ -160,7 +172,8 @@
                   "columns": [
                     "account_type",
                     "blockchain_address",
-                    "created_at"
+                    "created_at",
+                    "id"
                   ],
                   "filter": {
                     "user_identifier": {
@@ -172,6 +185,19 @@
               }
             ],
             "update_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at",
+                    "user_identifier"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              },
               {
                 "role": "user",
                 "permission": {
@@ -192,6 +218,15 @@
                   "set": {
                     "user_identifier": "x-hasura-User-Id"
                   }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "backend_only": false,
+                  "filter": {}
                 }
               }
             ]
@@ -929,9 +964,44 @@
                     "interface_type"
                   ]
                 }
+              },
+              {
+                "role": "backend",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "activated",
+                    "created_at",
+                    "interface_identifier",
+                    "interface_type"
+                  ]
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "interface_identifier",
+                    "interface_type"
+                  ]
+                }
               }
             ],
             "select_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "activated",
+                    "id",
+                    "interface_identifier",
+                    "interface_type",
+                    "created_at"
+                  ],
+                  "filter": {}
+                }
+              },
               {
                 "role": "user",
                 "permission": {
@@ -953,6 +1023,19 @@
             ],
             "update_permissions": [
               {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "activated",
+                    "created_at",
+                    "interface_identifier",
+                    "interface_type"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              },
+              {
                 "role": "user",
                 "permission": {
                   "columns": [
@@ -972,6 +1055,15 @@
                     "activated": "false",
                     "id": "x-hasura-User-Id"
                   }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "backend_only": false,
+                  "filter": {}
                 }
               }
             ]
