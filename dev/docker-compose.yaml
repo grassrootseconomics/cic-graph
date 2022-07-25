@@ -35,6 +35,16 @@ services:
     command: redis-server --loglevel warning
     ports:
       - '6379:6379'
+  cic-graph:
+    image: cic-graph:latest
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - postgres
+      - redis
+      - hasura
+    ports:
+      - '5000:5000'
 volumes:
   cic-graph-db:
     driver: local
