@@ -3,6 +3,7 @@ import mercuriusValidation from 'mercurius-validation'
 
 import { login } from './login.resolver'
 import { getChallenge } from './challenge.resolver'
+import { smsVerify } from './firebase.resolver'
 
 const schema = `
   ${mercuriusValidation.graphQLTypeDefs}
@@ -16,12 +17,18 @@ const schema = `
     token: String
   }
 
+  type VerifyResponse {
+    success: Boolean!
+  }
+
   type Query {
     login(
       message: String! @constraint(type: "string"),
       signature: String! @constraint(type: "string"),
       address: String! @constraint(type: "string", minLength: 42, maxLength: 42),
     ): LoginResponse!
+
+    smsVerify(jwt: String! @constraint(type: "string")): VerifyResponse!
   }
 
   type Mutation {
@@ -35,6 +42,7 @@ const resolvers: IResolvers = {
   },
   Query: {
     login,
+    smsVerify,
   },
 }
 
