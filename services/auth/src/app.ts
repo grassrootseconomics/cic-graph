@@ -52,7 +52,7 @@ async function startServer() {
   app.register(mercuriusValidation)
 
   await app.ready()
-  await app.listen({ port: config.server.port })
+  await app.listen({ port: config.server.port, host: '0.0.0.0' })
 
   for (const signal of ['SIGINT', 'SIGTERM']) {
     process.once(signal, async () => {
