@@ -25,16 +25,8 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_JWT_SECRET: '{"type": "Ed25519","key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAd+J5AqpZTDZIqyxke+bUJlQ8JZ7anWB9d0ZtcV9EoLs=\n-----END PUBLIC KEY-----","claims_namespace": "https://graph.grassecon.org","issuer": "https://auth.grassecon.org"}'
     ports:
       - '8080:8080'
-  redis:
-    image: redis:6-alpine
-    restart: unless-stopped
-    network_mode: "host"
-    command: redis-server --loglevel warning
-    ports:
-      - '6379:6379'
 volumes:
   cic-graph-db:
     driver: local
