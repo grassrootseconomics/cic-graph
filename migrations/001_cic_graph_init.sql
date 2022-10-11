@@ -150,13 +150,4 @@ CREATE TABLE IF NOT EXISTS services_ratings (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
----- create above / drop below ----
-
-DROP TABLE IF EXISTS
-services_ratings, services_images,services, services,
-service_accepted_payment, voucher_certifications, voucher_backers
-vouchers, marketplaces, accounts,
-personal_information, users;
-
-DROP TABLE IF EXISTS
-interface_type, service_type, account_type;
+---- create above
