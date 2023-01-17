@@ -1,3 +1,5 @@
+-- Warning: Run with a SQL migration tool like tern because of enum bootsrapping within the schema
+
 -- bootstrap enums as reference tables
 -- refs:
 --   - https://hasura.io/docs/latest/graphql/core/databases/postgres/schema/enums/
@@ -42,6 +44,14 @@ INSERT INTO gender_type (value) VALUES
 ('MALE'),
 ('FEMALE');
 
+CREATE TABLE IF NOT EXISTS transfer_type (
+  value TEXT PRIMARY KEY
+);
+INSERT INTO tx_type (value) VALUES
+('MINT_TO'),
+('TRANSFER'),
+('TRANSFER_FROM');
+
 -- bootstrap user and voucher core tables/models
 
 -- 'users' contains every registered user 
@@ -68,7 +78,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   user_identifier INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   account_type TEXT REFERENCES account_type(value) NOT NULL,
-  blockchain_address TEXT UNIQUE NOT NULL CHECK (blockchain_address <> '' AND char_length(blockchain_address) <= 64),
+  blockchain_address TEXT UNIQUE NOT NULL CHECK (blockchain_address <> '' AND char_length(blockchain_address) <= 42),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -83,7 +93,7 @@ CREATE TABLE IF NOT EXISTS marketplaces (
 -- vouchers created on sarafu network
 CREATE TABLE IF NOT EXISTS vouchers (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  token_address TEXT NOT NULL UNIQUE CHECK (token_address <> '' AND char_length(token_address) <= 64),
+  voucher_address TEXT NOT NULL UNIQUE CHECK (voucher_address <> '' AND char_length(voucher_address) <= 42),
   symbol TEXT NOT NULL CHECK (symbol <> '' AND char_length(symbol) <= 8),
   voucher_name TEXT NOT NULL CHECK (voucher_name <> '' AND char_length(voucher_name) <= 64),
   voucher_description TEXT NOT NULL CHECK (voucher_description <> '' AND char_length(voucher_description) <= 256),
@@ -151,10 +161,41 @@ CREATE TABLE IF NOT EXISTS services_ratings (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- linked transactional data
+CREATE TABLE IF NOT EXISTS transactions (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tx_hash VARCHAR(64) NOT NULL UNIQUE,
+    block_number INT NOT NULL,
+    tx_index INT NOT NULL,
+    voucher_address TEXT NOT NULL REFERENCES vouchers(voucher_address) NOT NULL CHECK (voucher_address <> '' AND char_length(voucher_address) <= 42),
+    sender_address VARCHAR(42) NOT NULL,
+    recipient_address VARCHAR(42) NOT NULL,
+    tx_value BIGINT NOT NULL,
+    tx_type TEXT REFERENCES tx_type(value),
+    date_block TIMESTAMP NOT NULL,
+    success BOOLEAN NOT NULL
+);
+
+-- virtual payment addresses
+CREATE TABLE IF NOT EXISTS vpa (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    vpa TEXT NOT NULL UNIQUE CHECK (vpa <> '' AND char_length(vpa) <= 64),
+    linked_account INT REFERENCES accounts(id) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
+-- sarafu till number
+CREATE TABLE IF NOT EXISTS till (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    -- TODO: checkl between 000 001 - 999 999
+    till NUMERIC NOT NULL UNIQUE CHECK,
+    linked_account INT REFERENCES accounts(id) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
 ---- create above / drop below ----
 
 DROP TABLE IF EXISTS
-services_ratings, services_images,services, services,
+till, vpa, transactions, services_ratings, services_images,services, services,
 service_accepted_payment, voucher_certifications, voucher_backers
 vouchers, marketplaces, accounts,
 personal_information, users;
