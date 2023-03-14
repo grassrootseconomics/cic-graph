@@ -44,7 +44,7 @@ INSERT INTO gender_type (value) VALUES
 ('MALE'),
 ('FEMALE');
 
-CREATE TABLE IF NOT EXISTS transfer_type (
+CREATE TABLE IF NOT EXISTS tx_type (
   value TEXT PRIMARY KEY
 );
 INSERT INTO tx_type (value) VALUES
@@ -182,23 +182,12 @@ CREATE TABLE IF NOT EXISTS vpa (
     vpa TEXT NOT NULL UNIQUE CHECK (vpa <> '' AND char_length(vpa) <= 64),
     linked_account INT REFERENCES accounts(id) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 -- sarafu till number
 CREATE TABLE IF NOT EXISTS till (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    -- TODO: checkl between 000 001 - 999 999
-    till NUMERIC NOT NULL UNIQUE CHECK,
+    till TEXT NOT NULL UNIQUE,
     linked_account INT REFERENCES accounts(id) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
----- create above / drop below ----
-
-DROP TABLE IF EXISTS
-till, vpa, transactions, services_ratings, services_images,services, services,
-service_accepted_payment, voucher_certifications, voucher_backers
-vouchers, marketplaces, accounts,
-personal_information, users;
-
-DROP TABLE IF EXISTS
-interface_type, service_type, account_type;
+);
