@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS vouchers (
   voucher_name TEXT NOT NULL CHECK (voucher_name <> '' AND char_length(voucher_name) <= 64),
   voucher_description TEXT NOT NULL CHECK (voucher_description <> '' AND char_length(voucher_description) <= 256),
   demurrage_rate NUMERIC NOT NULL CHECK (demurrage_rate > 0),
-  sink_address INT REFERENCES accounts(id) NOT NULL,
+  sink_address TEXT NOT NULL CHECK (voucher_address <> '' AND char_length(voucher_address) <= 42),
   supply INT NOT NULL CHECK (supply > 0),
   active BOOLEAN DEFAULT true,
   location_name TEXT NULL CHECK (location_name <> '' AND char_length(location_name) <= 64),
