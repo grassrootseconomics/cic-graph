@@ -1,0 +1,1398 @@
+{
+  "resource_version": 3,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "cic_graph",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "name": "account_type",
+              "schema": "public"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "accounts",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "account_type",
+                    "table": {
+                      "name": "accounts",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "accounts",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "accountTypeByAccountType",
+                "using": {
+                  "foreign_key_constraint_on": "account_type"
+                }
+              },
+              {
+                "name": "marketplace",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "account",
+                    "table": {
+                      "name": "marketplaces",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_identifier"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services_ratings",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "rating_by",
+                    "table": {
+                      "name": "services_ratings",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tills",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "linked_account",
+                    "table": {
+                      "name": "till",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_backers",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "backer",
+                    "table": {
+                      "name": "voucher_backers",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_certifications",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "certifier",
+                    "table": {
+                      "name": "voucher_certifications",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "vpas",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "linked_account",
+                    "table": {
+                      "name": "vpa",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "user_identifier"
+                  ]
+                }
+              },
+              {
+                "role": "backend",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at",
+                    "user_identifier"
+                  ]
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "set": {
+                    "account_type": "x-hasura-User-Id",
+                    "user_identifier": "x-hasura-User-Id"
+                  },
+                  "columns": [
+                    "account_type",
+                    "blockchain_address"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "user_identifier",
+                    "account_type",
+                    "blockchain_address",
+                    "created_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at",
+                    "id"
+                  ],
+                  "filter": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "limit": 250
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "account_type",
+                    "blockchain_address",
+                    "created_at",
+                    "user_identifier"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "account_type",
+                    "blockchain_address"
+                  ],
+                  "filter": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "check": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "set": {
+                    "user_identifier": "x-hasura-User-Id"
+                  }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "gender_type",
+              "schema": "public"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "personal_informations",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "gender",
+                    "table": {
+                      "name": "personal_information",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "interface_type",
+              "schema": "public"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "users",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "interface_type",
+                    "table": {
+                      "name": "users",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "marketplaces",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "accountByAccount",
+                "using": {
+                  "foreign_key_constraint_on": "account"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "marketplace",
+                    "table": {
+                      "name": "services",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "account": {
+                      "_eq": "X-Hasura-Account-Id"
+                    }
+                  },
+                  "set": {
+                    "account": "x-hasura-Account-Id"
+                  },
+                  "columns": [
+                    "created_at",
+                    "marketplace_name"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "account",
+                    "created_at",
+                    "id",
+                    "marketplace_name"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "account",
+                    "id",
+                    "marketplace_name",
+                    "created_at"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "marketplace_name"
+                  ],
+                  "filter": {
+                    "account": {
+                      "_eq": "X-Hasura-Account-Id"
+                    }
+                  },
+                  "check": {
+                    "account": {
+                      "_eq": "X-Hasura-Account-Id"
+                    }
+                  },
+                  "set": {
+                    "account": "x-hasura-Account-Id"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "personal_information",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "gender_type",
+                "using": {
+                  "foreign_key_constraint_on": "gender"
+                }
+              },
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "user_identifier"
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "set": {
+                    "user_identifier": "x-hasura-User-Id"
+                  },
+                  "columns": [
+                    "family_name",
+                    "gender",
+                    "given_names",
+                    "location_name",
+                    "year_of_birth"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "user_identifier",
+                    "year_of_birth",
+                    "geo",
+                    "family_name",
+                    "gender",
+                    "given_names",
+                    "location_name"
+                  ],
+                  "filter": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "limit": 1
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "family_name",
+                    "gender",
+                    "given_names",
+                    "location_name",
+                    "year_of_birth"
+                  ],
+                  "filter": {
+                    "user_identifier": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "check": null,
+                  "set": {
+                    "user_identifier": "x-hasura-User-Id"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "service_accepted_payment",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_accepted_payment",
+                    "table": {
+                      "name": "services",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "services": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  },
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 250,
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "price",
+                    "voucher"
+                  ],
+                  "filter": {
+                    "services": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  },
+                  "check": {
+                    "services": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "filter": {
+                    "services": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "service_type",
+              "schema": "public"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "services",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_type",
+                    "table": {
+                      "name": "services",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "services",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "marketplaceByMarketplace",
+                "using": {
+                  "foreign_key_constraint_on": "marketplace"
+                }
+              },
+              {
+                "name": "serviceAcceptedPaymentByServiceAcceptedPayment",
+                "using": {
+                  "foreign_key_constraint_on": "service_accepted_payment"
+                }
+              },
+              {
+                "name": "serviceTypeByServiceType",
+                "using": {
+                  "foreign_key_constraint_on": "service_type"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "services_images",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_id",
+                    "table": {
+                      "name": "services_images",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "services_ratings",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "service_id",
+                    "table": {
+                      "name": "services_ratings",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "marketplaceByMarketplace": {
+                      "account": {
+                        "_eq": "X-Hasura-Account_Id"
+                      }
+                    }
+                  },
+                  "columns": [
+                    "location_name",
+                    "marketplace",
+                    "service_accepted_payment",
+                    "service_available",
+                    "service_description",
+                    "service_type"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "service_available",
+                    "id",
+                    "marketplace",
+                    "service_accepted_payment",
+                    "geo",
+                    "location_name",
+                    "service_description",
+                    "service_type",
+                    "created_at"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "service_available",
+                    "id",
+                    "marketplace",
+                    "service_accepted_payment",
+                    "geo",
+                    "location_name",
+                    "service_description",
+                    "service_type",
+                    "created_at"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "location_name",
+                    "marketplace",
+                    "service_accepted_payment",
+                    "service_available",
+                    "service_description",
+                    "service_type"
+                  ],
+                  "filter": {
+                    "marketplaceByMarketplace": {
+                      "account": {
+                        "_eq": "X-Hasura-Account_Id"
+                      }
+                    }
+                  },
+                  "check": {
+                    "marketplaceByMarketplace": {
+                      "account": {
+                        "_eq": "X-Hasura-Account_Id"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "filter": {
+                    "marketplaceByMarketplace": {
+                      "account": {
+                        "_eq": "X-Hasura-Account_Id"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "services_images",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "service",
+                "using": {
+                  "foreign_key_constraint_on": "service_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "service_id",
+                    "url_pointer"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "service_id",
+                    "url_pointer"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "filter": {
+                    "service": {
+                      "marketplaceByMarketplace": {
+                        "account": {
+                          "_eq": "X-Hasura-Account-Id"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "services_ratings",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "rating_by"
+                }
+              },
+              {
+                "name": "service",
+                "using": {
+                  "foreign_key_constraint_on": "service_id"
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "check": {
+                    "rating_by": {
+                      "_eq": "X-Hasura_Account-Id"
+                    }
+                  },
+                  "set": {
+                    "rating_by": "x-hasura-Account-Id"
+                  },
+                  "columns": [
+                    "score",
+                    "service_id"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "rating_by",
+                    "score",
+                    "service_id"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "rating_by",
+                    "score",
+                    "service_id"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "score",
+                    "service_id"
+                  ],
+                  "filter": {
+                    "rating_by": {
+                      "_eq": "X-Hasura_Account-Id"
+                    }
+                  },
+                  "check": {
+                    "rating_by": {
+                      "_eq": "X-Hasura_Account-Id"
+                    }
+                  },
+                  "set": {
+                    "rating_by": "x-hasura-Account-Id"
+                  }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "user",
+                "permission": {
+                  "filter": {
+                    "rating_by": {
+                      "_eq": "X-Hasura_Account-Id"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "till",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "linked_account"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "transactions",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "txTypeByTxType",
+                "using": {
+                  "foreign_key_constraint_on": "tx_type"
+                }
+              },
+              {
+                "name": "voucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher_address"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "tx_type",
+              "schema": "public"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "transactions",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tx_type",
+                    "table": {
+                      "name": "transactions",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "users",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "interfaceTypeByInterfaceType",
+                "using": {
+                  "foreign_key_constraint_on": "interface_type"
+                }
+              },
+              {
+                "name": "personal_information",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_identifier",
+                    "table": {
+                      "name": "personal_information",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "accounts",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "user_identifier",
+                    "table": {
+                      "name": "accounts",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "interface_identifier",
+                    "interface_type"
+                  ]
+                }
+              },
+              {
+                "role": "backend",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "activated",
+                    "created_at",
+                    "interface_identifier",
+                    "interface_type"
+                  ]
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "interface_identifier",
+                    "interface_type"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "activated",
+                    "id",
+                    "interface_identifier",
+                    "interface_type",
+                    "created_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "activated",
+                    "created_at",
+                    "id",
+                    "interface_identifier",
+                    "interface_type"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "limit": 1
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "activated",
+                    "created_at",
+                    "interface_identifier",
+                    "interface_type"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "interface_identifier"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "check": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  },
+                  "set": {
+                    "activated": "false",
+                    "id": "x-hasura-User-Id"
+                  }
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "voucher_backers",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "backer"
+                }
+              },
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "backer",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "backer",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "voucher_certifications",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "certifier"
+                }
+              },
+              {
+                "name": "voucherByVoucher",
+                "using": {
+                  "foreign_key_constraint_on": "voucher"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "certificate_url_pointer",
+                    "certifier",
+                    "certifier_weight",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "certificate_url_pointer",
+                    "certifier",
+                    "certifier_weight",
+                    "created_at",
+                    "voucher"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "vouchers",
+              "schema": "public"
+            },
+            "array_relationships": [
+              {
+                "name": "service_accepted_payments",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "name": "service_accepted_payment",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "transactions",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher_address",
+                    "table": {
+                      "name": "transactions",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_backers",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "name": "voucher_backers",
+                      "schema": "public"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "voucher_certifications",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "voucher",
+                    "table": {
+                      "name": "voucher_certifications",
+                      "schema": "public"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "anonymous",
+                "permission": {
+                  "columns": [
+                    "active",
+                    "created_at",
+                    "demurrage_rate",
+                    "geo",
+                    "location_name",
+                    "sink_address",
+                    "supply",
+                    "symbol",
+                    "voucher_address",
+                    "voucher_description",
+                    "voucher_name"
+                  ],
+                  "filter": {},
+                  "limit": 100
+                }
+              },
+              {
+                "role": "user",
+                "permission": {
+                  "columns": [
+                    "active",
+                    "created_at",
+                    "demurrage_rate",
+                    "geo",
+                    "location_name",
+                    "sink_address",
+                    "supply",
+                    "symbol",
+                    "voucher_address",
+                    "voucher_description",
+                    "voucher_name"
+                  ],
+                  "filter": {},
+                  "limit": 250
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "vpa",
+              "schema": "public"
+            },
+            "object_relationships": [
+              {
+                "name": "account",
+                "using": {
+                  "foreign_key_constraint_on": "linked_account"
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "linked_account",
+                    "vpa"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "linked_account",
+                    "vpa",
+                    "created_at"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "linked_account",
+                    "vpa"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "backend",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "database_url": "postgres://postgres:postgres@postgres:5432/cic_graph",
+            "isolation_level": "read-committed",
+            "use_prepared_statements": true
+          }
+        }
+      }
+    ]
+  }
+}
