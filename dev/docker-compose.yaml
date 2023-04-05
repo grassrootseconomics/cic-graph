@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - cic-graph-pg:/var/lib/postgresql/data
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+  hasura:
+    image: ghcr.io/grassrootseconomics/cic-graph/cic-graph:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cic_graph
+      PG_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cic_graph
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: admin
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_DEV_MODE: "true"
+    ports:
+      - '8080:8080'
+volumes:
+  cic-graph-pg:
+    driver: local
+  

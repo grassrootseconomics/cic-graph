@@ -1,0 +1,60 @@
+table:
+  name: services_ratings
+  schema: public
+object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: rating_by
+  - name: service
+    using:
+      foreign_key_constraint_on: service_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        rating_by:
+          _eq: X-Hasura_Account-Id
+      set:
+        rating_by: x-hasura-Account-Id
+      columns:
+        - score
+        - service_id
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - rating_by
+        - score
+        - service_id
+      filter: {}
+      limit: 100
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - rating_by
+        - score
+        - service_id
+      filter: {}
+      limit: 250
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - score
+        - service_id
+      filter:
+        rating_by:
+          _eq: X-Hasura_Account-Id
+      check:
+        rating_by:
+          _eq: X-Hasura_Account-Id
+      set:
+        rating_by: x-hasura-Account-Id
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        rating_by:
+          _eq: X-Hasura_Account-Id

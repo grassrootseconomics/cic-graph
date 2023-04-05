@@ -1,0 +1,96 @@
+table:
+  name: services
+  schema: public
+object_relationships:
+  - name: marketplaceByMarketplace
+    using:
+      foreign_key_constraint_on: marketplace
+  - name: serviceAcceptedPaymentByServiceAcceptedPayment
+    using:
+      foreign_key_constraint_on: service_accepted_payment
+  - name: serviceTypeByServiceType
+    using:
+      foreign_key_constraint_on: service_type
+array_relationships:
+  - name: services_images
+    using:
+      foreign_key_constraint_on:
+        column: service_id
+        table:
+          name: services_images
+          schema: public
+  - name: services_ratings
+    using:
+      foreign_key_constraint_on:
+        column: service_id
+        table:
+          name: services_ratings
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        marketplaceByMarketplace:
+          account:
+            _eq: X-Hasura-Account_Id
+      columns:
+        - location_name
+        - marketplace
+        - service_accepted_payment
+        - service_available
+        - service_description
+        - service_type
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - service_available
+        - id
+        - marketplace
+        - service_accepted_payment
+        - geo
+        - location_name
+        - service_description
+        - service_type
+        - created_at
+      filter: {}
+      limit: 100
+  - role: user
+    permission:
+      columns:
+        - service_available
+        - id
+        - marketplace
+        - service_accepted_payment
+        - geo
+        - location_name
+        - service_description
+        - service_type
+        - created_at
+      filter: {}
+      limit: 250
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - location_name
+        - marketplace
+        - service_accepted_payment
+        - service_available
+        - service_description
+        - service_type
+      filter:
+        marketplaceByMarketplace:
+          account:
+            _eq: X-Hasura-Account_Id
+      check:
+        marketplaceByMarketplace:
+          account:
+            _eq: X-Hasura-Account_Id
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        marketplaceByMarketplace:
+          account:
+            _eq: X-Hasura-Account_Id

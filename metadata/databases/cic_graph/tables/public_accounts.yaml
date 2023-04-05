@@ -1,0 +1,128 @@
+table:
+  name: accounts
+  schema: public
+object_relationships:
+  - name: accountTypeByAccountType
+    using:
+      foreign_key_constraint_on: account_type
+  - name: marketplace
+    using:
+      foreign_key_constraint_on:
+        column: account
+        table:
+          name: marketplaces
+          schema: public
+  - name: user
+    using:
+      foreign_key_constraint_on: user_identifier
+array_relationships:
+  - name: services_ratings
+    using:
+      foreign_key_constraint_on:
+        column: rating_by
+        table:
+          name: services_ratings
+          schema: public
+  - name: tills
+    using:
+      foreign_key_constraint_on:
+        column: linked_account
+        table:
+          name: till
+          schema: public
+  - name: voucher_backers
+    using:
+      foreign_key_constraint_on:
+        column: backer
+        table:
+          name: voucher_backers
+          schema: public
+  - name: voucher_certifications
+    using:
+      foreign_key_constraint_on:
+        column: certifier
+        table:
+          name: voucher_certifications
+          schema: public
+  - name: vpas
+    using:
+      foreign_key_constraint_on:
+        column: linked_account
+        table:
+          name: vpa
+          schema: public
+insert_permissions:
+  - role: anonymous
+    permission:
+      check: {}
+      columns:
+        - account_type
+        - blockchain_address
+        - user_identifier
+  - role: backend
+    permission:
+      check: {}
+      columns:
+        - account_type
+        - blockchain_address
+        - created_at
+        - user_identifier
+  - role: user
+    permission:
+      check:
+        user_identifier:
+          _eq: X-Hasura-User-Id
+      set:
+        account_type: x-hasura-User-Id
+        user_identifier: x-hasura-User-Id
+      columns:
+        - account_type
+        - blockchain_address
+select_permissions:
+  - role: backend
+    permission:
+      columns:
+        - id
+        - user_identifier
+        - account_type
+        - blockchain_address
+        - created_at
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - account_type
+        - blockchain_address
+        - created_at
+        - id
+      filter:
+        user_identifier:
+          _eq: X-Hasura-User-Id
+      limit: 250
+update_permissions:
+  - role: backend
+    permission:
+      columns:
+        - account_type
+        - blockchain_address
+        - created_at
+        - user_identifier
+      filter: {}
+      check: {}
+  - role: user
+    permission:
+      columns:
+        - account_type
+        - blockchain_address
+      filter:
+        user_identifier:
+          _eq: X-Hasura-User-Id
+      check:
+        user_identifier:
+          _eq: X-Hasura-User-Id
+      set:
+        user_identifier: x-hasura-User-Id
+delete_permissions:
+  - role: backend
+    permission:
+      filter: {}

@@ -1,0 +1,10 @@
+table:
+  name: transactions
+  schema: public
+object_relationships:
+  - name: txTypeByTxType
+    using:
+      foreign_key_constraint_on: tx_type
+  - name: voucher
+    using:
+      foreign_key_constraint_on: voucher_address

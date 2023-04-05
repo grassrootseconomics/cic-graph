@@ -1,0 +1,65 @@
+table:
+  name: vouchers
+  schema: public
+array_relationships:
+  - name: service_accepted_payments
+    using:
+      foreign_key_constraint_on:
+        column: voucher
+        table:
+          name: service_accepted_payment
+          schema: public
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: voucher_address
+        table:
+          name: transactions
+          schema: public
+  - name: voucher_backers
+    using:
+      foreign_key_constraint_on:
+        column: voucher
+        table:
+          name: voucher_backers
+          schema: public
+  - name: voucher_certifications
+    using:
+      foreign_key_constraint_on:
+        column: voucher
+        table:
+          name: voucher_certifications
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - active
+        - created_at
+        - demurrage_rate
+        - geo
+        - location_name
+        - sink_address
+        - supply
+        - symbol
+        - voucher_address
+        - voucher_description
+        - voucher_name
+      filter: {}
+      limit: 100
+  - role: user
+    permission:
+      columns:
+        - active
+        - created_at
+        - demurrage_rate
+        - geo
+        - location_name
+        - sink_address
+        - supply
+        - symbol
+        - voucher_address
+        - voucher_description
+        - voucher_name
+      filter: {}
+      limit: 250
