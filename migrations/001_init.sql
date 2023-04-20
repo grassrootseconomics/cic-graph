@@ -47,7 +47,7 @@ INSERT INTO tx_type (value) VALUES
 
 -- bootstrap user and voucher core tables/models
 
--- 'users' contains every registered user 
+-- 'users' contains every registered user
 CREATE TABLE IF NOT EXISTS users (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   interface_type TEXT REFERENCES interface_type(value) NOT NULL,
@@ -158,14 +158,14 @@ CREATE TABLE IF NOT EXISTS services_ratings (
 CREATE TABLE IF NOT EXISTS transactions (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tx_hash VARCHAR(64) NOT NULL UNIQUE,
-    block_number INT NOT NULL,
+    "block" INT NOT NULL,
     tx_index INT NOT NULL,
     voucher_address TEXT NOT NULL REFERENCES vouchers(voucher_address) NOT NULL CHECK (voucher_address <> '' AND char_length(voucher_address) <= 42),
-    sender_address VARCHAR(42) NOT NULL,
-    recipient_address VARCHAR(42) NOT NULL,
-    tx_value BIGINT NOT NULL,
+    "to" VARCHAR(42) NOT NULL,
+    "from" VARCHAR(42) NOT NULL,
+    "value" BIGINT NOT NULL,
     tx_type TEXT REFERENCES tx_type(value),
-    date_block TIMESTAMP NOT NULL,
+    "timestamp" TIMESTAMP NOT NULL,
     success BOOLEAN NOT NULL
 );
 
