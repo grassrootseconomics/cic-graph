@@ -35,9 +35,8 @@ Below is an exmaple of how to add a table and sync the git repo with the changes
 1. Bring up the containers in `dev` with `docker-compose up -d`.
 2. Start the Hasura Console with `hasura console --admin-secret "admin" --endpoint http://localhost:8080`.
 3. In the `migrations` folder, run `tern new $MIGRATION_NAME` and write the migration file.
-4. Run the migration with `tern migrate` in the `migrations` folder.
-5. Track the changes on the Hasura Console (Data tab)
-6. Run `hasura metadata export --admin-secret "admin" --endpoint http://localhost:8080` to sync the metadata.
+4. Run the migration inside Hasura in the Data manager tab, checking "Track This", "Cacade metadata" and "This is a migration"
+5. Run `hasura metadata export --admin-secret "admin" --endpoint http://localhost:8080` to sync the metadata.
 7. Git commit.
 
 
