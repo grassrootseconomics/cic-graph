@@ -1,6 +1,6 @@
 # cic-graph
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/grassrootseconomics/cic-graph)
+![GitHub release (latest by date)](https://img.shields.io/github/v/tag/grassrootseconomics/cic-graph)
 
 > CIC Graph
 
