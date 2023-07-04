@@ -8,3 +8,17 @@ object_relationships:
   - name: voucher
     using:
       foreign_key_constraint_on: voucher_address
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - date_block
+        - id
+        - recipient_address
+        - sender_address
+        - success
+        - tx_hash
+        - tx_type
+        - tx_value
+        - voucher_address
+      filter: {}

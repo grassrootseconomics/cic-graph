@@ -38,6 +38,7 @@ select_permissions:
         - created_at
         - demurrage_rate
         - geo
+        - id
         - location_name
         - sink_address
         - supply
@@ -54,6 +55,7 @@ select_permissions:
         - created_at
         - demurrage_rate
         - geo
+        - id
         - location_name
         - sink_address
         - supply
