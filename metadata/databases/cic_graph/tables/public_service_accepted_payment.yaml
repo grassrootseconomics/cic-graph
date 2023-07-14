@@ -28,6 +28,7 @@ select_permissions:
   - role: anonymous
     permission:
       columns:
+        - id
         - price
         - voucher
       filter: {}
