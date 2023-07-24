@@ -5,6 +5,9 @@ object_relationships:
   - name: accountTypeByAccountType
     using:
       foreign_key_constraint_on: account_type
+  - name: account_role_type
+    using:
+      foreign_key_constraint_on: account_role
   - name: marketplace
     using:
       foreign_key_constraint_on:
