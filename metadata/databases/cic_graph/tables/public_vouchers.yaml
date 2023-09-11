@@ -6,6 +6,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: voucher_type
 array_relationships:
+  - name: commodity_listings
+    using:
+      foreign_key_constraint_on:
+        column: voucher
+        table:
+          name: commodity_listings
+          schema: public
   - name: service_accepted_payments
     using:
       foreign_key_constraint_on:

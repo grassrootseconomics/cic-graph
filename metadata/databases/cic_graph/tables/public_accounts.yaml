@@ -19,6 +19,13 @@ object_relationships:
     using:
       foreign_key_constraint_on: user_identifier
 array_relationships:
+  - name: commodity_listings
+    using:
+      foreign_key_constraint_on:
+        column: account
+        table:
+          name: commodity_listings
+          schema: public
   - name: services_ratings
     using:
       foreign_key_constraint_on:

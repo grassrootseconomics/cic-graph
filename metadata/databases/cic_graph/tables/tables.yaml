@@ -1,6 +1,8 @@
 - "!include public_account_role_type.yaml"
 - "!include public_account_type.yaml"
 - "!include public_accounts.yaml"
+- "!include public_commodity_listings.yaml"
+- "!include public_commodity_type.yaml"
 - "!include public_gender_type.yaml"
 - "!include public_interface_type.yaml"
 - "!include public_marketplaces.yaml"
