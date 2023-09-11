@@ -16,5 +16,6 @@
 - "!include public_users.yaml"
 - "!include public_voucher_certifications.yaml"
 - "!include public_voucher_issuers.yaml"
+- "!include public_voucher_type.yaml"
 - "!include public_vouchers.yaml"
 - "!include public_vpa.yaml"

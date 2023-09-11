@@ -1,0 +1,11 @@
+table:
+  name: voucher_type
+  schema: public
+array_relationships:
+  - name: vouchers
+    using:
+      foreign_key_constraint_on:
+        column: voucher_type
+        table:
+          name: vouchers
+          schema: public
