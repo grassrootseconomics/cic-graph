@@ -1,7 +1,18 @@
 table:
   name: vouchers
   schema: public
+object_relationships:
+  - name: voucherTypeByVoucherType
+    using:
+      foreign_key_constraint_on: voucher_type
 array_relationships:
+  - name: commodity_listings
+    using:
+      foreign_key_constraint_on:
+        column: voucher
+        table:
+          name: commodity_listings
+          schema: public
   - name: service_accepted_payments
     using:
       foreign_key_constraint_on:
@@ -30,38 +41,3 @@ array_relationships:
         table:
           name: voucher_certifications
           schema: public
-select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - active
-        - created_at
-        - demurrage_rate
-        - geo
-        - id
-        - location_name
-        - sink_address
-        - supply
-        - symbol
-        - voucher_address
-        - voucher_description
-        - voucher_name
-      filter: {}
-      limit: 100
-  - role: user
-    permission:
-      columns:
-        - active
-        - created_at
-        - demurrage_rate
-        - geo
-        - id
-        - location_name
-        - sink_address
-        - supply
-        - symbol
-        - voucher_address
-        - voucher_description
-        - voucher_name
-      filter: {}
-      limit: 250

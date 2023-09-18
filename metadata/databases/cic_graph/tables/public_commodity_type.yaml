@@ -1,0 +1,12 @@
+table:
+  name: commodity_type
+  schema: public
+is_enum: true
+array_relationships:
+  - name: commodity_listings
+    using:
+      foreign_key_constraint_on:
+        column: commodity_type
+        table:
+          name: commodity_listings
+          schema: public
