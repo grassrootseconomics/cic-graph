@@ -3,6 +3,7 @@
 - "!include public_accounts.yaml"
 - "!include public_commodity_listings.yaml"
 - "!include public_commodity_type.yaml"
+- "!include public_gas_gift_status_type.yaml"
 - "!include public_gender_type.yaml"
 - "!include public_interface_type.yaml"
 - "!include public_marketplaces.yaml"
