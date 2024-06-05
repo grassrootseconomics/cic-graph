@@ -13,13 +13,6 @@ array_relationships:
         table:
           name: commodity_listings
           schema: public
-  - name: service_accepted_payments
-    using:
-      foreign_key_constraint_on:
-        column: voucher
-        table:
-          name: service_accepted_payment
-          schema: public
   - name: transactions
     using:
       foreign_key_constraint_on:
