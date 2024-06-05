@@ -1,0 +1,3 @@
+table:
+  name: swap_pool_tags
+  schema: public

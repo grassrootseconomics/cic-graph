@@ -1,0 +1,3 @@
+table:
+  name: voucher_tags
+  schema: public
