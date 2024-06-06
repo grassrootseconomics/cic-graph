@@ -24,7 +24,7 @@ array_relationships:
       foreign_key_constraint_on:
         column: account
         table:
-          name: commodity_listings
+          name: product_listings
           schema: public
   - name: voucher_backers
     using:
