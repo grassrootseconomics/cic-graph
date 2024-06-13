@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS swap_pools (
 );
 
 -- URL pointers
-ALTER TABLE vouchers ADD COLUMN uoa TEXT NOT NULL;
+ALTER TABLE vouchers ADD COLUMN uoa TEXT;
 ALTER TABLE vouchers ADD COLUMN icon_url TEXT;
 ALTER TABLE vouchers ADD COLUMN banner_url TEXT;
 
