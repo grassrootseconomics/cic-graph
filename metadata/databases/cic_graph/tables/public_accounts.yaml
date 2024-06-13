@@ -24,21 +24,7 @@ array_relationships:
       foreign_key_constraint_on:
         column: account
         table:
-          name: commodity_listings
-          schema: public
-  - name: services_ratings
-    using:
-      foreign_key_constraint_on:
-        column: rating_by
-        table:
-          name: services_ratings
-          schema: public
-  - name: tills
-    using:
-      foreign_key_constraint_on:
-        column: linked_account
-        table:
-          name: till
+          name: product_listings
           schema: public
   - name: voucher_backers
     using:

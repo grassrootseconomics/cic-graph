@@ -5,14 +5,6 @@ object_relationships:
   - name: accountByAccount
     using:
       foreign_key_constraint_on: account
-array_relationships:
-  - name: services
-    using:
-      foreign_key_constraint_on:
-        column: marketplace
-        table:
-          name: services
-          schema: public
 insert_permissions:
   - role: user
     permission:
