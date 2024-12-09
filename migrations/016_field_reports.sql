@@ -1,4 +1,6 @@
-
+CREATE TABLE IF NOT EXISTS field_report_status_type (
+  value TEXT PRIMARY KEY
+);
 INSERT INTO field_report_status_type (value) VALUES
 ('DRAFT'),
 ('SUBMITTED'),
