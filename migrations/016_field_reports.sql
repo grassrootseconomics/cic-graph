@@ -8,6 +8,7 @@ INSERT INTO field_report_status_type (value) VALUES
 CREATE TABLE IF NOT EXISTS field_reports (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title TEXT NOT NULL, 
+    report TEXT NOT NULL, 
     "description" TEXT NOT NULL,
     vouchers TEXT[] NOT NULL,
     image_url TEXT,
