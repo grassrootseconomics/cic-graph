@@ -16,6 +16,18 @@ services:
       retries: 5
     ports:
       - "5432:5432"
+  migrate:
+    image: ghcr.io/jackc/tern:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - PG_DATABASE_URL=postgres://postgres:postgres@postgres:5432/cic_graph?sslmode=disable
+    volumes:
+      - ../migrations:/migrations
+    working_dir: /migrations
+    command: ["migrate"]
+
 volumes:
   cic-graph-pg:
     driver: local
