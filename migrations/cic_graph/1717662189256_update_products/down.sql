@@ -1,4 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- ALTER TABLE commodity_listings RENAME TO product_listings;
--- ALTER TABLE product_listings ADD COLUMN price INT NOT NULL;
