@@ -1,4 +1,0 @@
-table:
-  name: gas_gift_status_type
-  schema: public
-is_enum: true

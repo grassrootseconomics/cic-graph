@@ -15,24 +15,19 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - '5432:5432'
-  hasura:
-    image: ghcr.io/grassrootseconomics/cic-graph/cic-graph:latest
-    restart: unless-stopped
+      - "5432:5432"
+  migrate:
+    image: ghcr.io/jackc/tern:latest
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cic_graph
-      PG_DATABASE_URL: postgres://postgres:postgres@postgres:5432/cic_graph
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_ADMIN_SECRET: admin
-      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      HASURA_GRAPHQL_DEV_MODE: "true"
-    ports:
-      - '8080:8080'
+      - PG_DATABASE_URL=postgres://postgres:postgres@postgres:5432/cic_graph?sslmode=disable
+    volumes:
+      - ../migrations:/migrations
+    working_dir: /migrations
+    command: ["migrate"]
+
 volumes:
   cic-graph-pg:
     driver: local
-  

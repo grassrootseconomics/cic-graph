@@ -1,1 +1,0 @@
-ALTER TABLE vouchers ADD COLUMN internal BOOLEAN DEFAULT false;
