@@ -118,7 +118,7 @@ export const vouchers = pgTable("vouchers", {
   iconUrl: text("icon_url"),
   bannerUrl: text("banner_url"),
   locationName: text("location_name"),
-  geo: text("geo"),
+  geo: point("geo"),
   customTerms: text("custom_terms"),
   contractVersion: text("contract_version").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
