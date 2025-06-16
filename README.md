@@ -1,29 +1,39 @@
 # cic-graph
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/tag/grassrootseconomics/cic-graph)
 
-> CIC Graph
 
-Central CIC Stack Postgres store specifically for indexing:
 
-- Transactional data from the chain
-- Custodial user data (PII, custodial client data)
-- Voucher data (backers, certifications, e.t.c.)
-- Marketplace data (proposed)
+## Dev
+### Docker
+To run the application in a Docker container, you can use the following command:
 
-Relationships, check constraints and referential integrity are built in at the Postgres level. However, CIC Graph is meant to be complemented by secondary backend services to provide CRUD and any other important functionality around it.
+```bash 
+cd dev
+docker compose up
+```
+### Install dependencies
 
-**Prerequisites**
+```bash
+pnpm install
+```
 
-- Docker and Docker Compose (latest)
-- [tern](https://github.com/jackc/tern)
 
-### Adding a new table
+### Development 
 
-1. Bring up the containers in `dev` with `docker-compose up -d`.
-2. In the `migrations` folder, run `tern new $MIGRATION_NAME` and write the migration file.
-3. Git commit.
+Testing new schema designs or modifications in a local development environment
+```bash
+pnpm drizzle-kit push
+```
 
-## License
 
-[AGPL-3.0](LICENSE).
+#### Migrations
+To generate a new migration, you can use the following command:
+
+```bash
+pnpm drizzle-kit generate
+```
+
+Apply Migration
+```bash
+pnpm drizzle-kit migrate
+```
