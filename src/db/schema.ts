@@ -49,10 +49,9 @@ export const reportStatus = pgEnum("report_status", [
   "REJECTED",
 ]);
 export const voucherKind = pgEnum("voucher_kind", [
-  "DEMURRAGE",
+  "DEMURRAGE_ERC20",
   "ERC20",
-  "GIFTABLE",
-  "UNKNOWN",
+  "EXPIRING_ERC20",
 ]);
 export const gasGiftStatus = pgEnum("gas_gift_status", [
   "NONE",
