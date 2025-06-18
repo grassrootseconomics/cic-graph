@@ -239,6 +239,14 @@ export const swapPools = pgTable("swap_pools", {
   description: text("description").notNull(),
   bannerUrl: text("banner_url"),
   customTerms: text("custom_terms"),
+  defaultVoucherAddr: text("default_voucher_addr").references(
+    () => vouchers.address,
+    { onDelete: "set null" }
+  ),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }),
 });
 
 export const swapPoolTags = pgTable(
