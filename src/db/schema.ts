@@ -61,6 +61,33 @@ export const gasGiftStatus = pgEnum("gas_gift_status", [
 ]);
 export const contactKind = pgEnum("contact_kind", ["EMAIL", "PHONE", "SOCIAL"]);
 
+export const notificationKind = pgEnum("notification_kind", [
+  "SYSTEM", // System-generated notifications
+  "USER_MESSAGE", // Direct user-to-user messages
+  "OFFERING_NEW", // New offering in your area/interests
+  "OFFERING_UPDATE", // Offering you're watching was updated
+  "FIELD_REPORT_NEW", // New field report
+  "FIELD_REPORT_STATUS", // Field report status changed
+  "GAS_GIFT_STATUS", // Gas gift status update
+  "VOUCHER_NEW", // New voucher available
+  "SWAP_POOL_UPDATE", // Swap pool updates
+  "VERIFICATION_REQUEST", // Verification requested
+  "ADMIN_NOTICE", // Administrative notices
+]);
+
+export const notificationStatus = pgEnum("notification_status", [
+  "UNREAD",
+  "READ",
+  "ARCHIVED",
+]);
+
+export const notificationPriority = pgEnum("notification_priority", [
+  "LOW",
+  "NORMAL",
+  "HIGH",
+  "URGENT",
+]);
+
 // ---------------------------------------------------------------
 // 2.  Core tables
 // ---------------------------------------------------------------
@@ -333,5 +360,66 @@ export const swapPoolContacts = pgTable(
       t.kind,
       t.value
     ),
+  ]
+);
+
+// ---------------------------------------------------------------
+// 8.  Notifications
+// ---------------------------------------------------------------
+export const notifications = pgTable(
+  "notifications",
+  {
+    id: bigserial("id", { mode: "number" }).primaryKey(),
+    recipientAddr: text("recipient_addr")
+      .notNull()
+      .references(() => users.address, { onDelete: "cascade" }),
+    senderAddr: text("sender_addr").references(() => users.address, {
+      onDelete: "set null",
+    }),
+    kind: notificationKind("kind").notNull(),
+    status: notificationStatus("status").notNull().default("UNREAD"),
+    priority: notificationPriority("priority").notNull().default("NORMAL"),
+    title: text("title").notNull(),
+    body: text("body").notNull(),
+    imageUrl: text("image_url"),
+    actionUrl: text("action_url"), // Deep link or URL for action
+    actionLabel: text("action_label"), // Button text like "View Offering"
+    // Generic reference fields for linking to any entity
+    refOfferingId: bigint("ref_offering_id", { mode: "number" }).references(
+      () => offerings.id,
+      { onDelete: "cascade" }
+    ),
+    refFieldReportId: bigint("ref_field_report_id", {
+      mode: "number",
+    }).references(() => fieldReports.id, { onDelete: "cascade" }),
+    refVoucherAddr: text("ref_voucher_addr").references(
+      () => vouchers.address,
+      {
+        onDelete: "cascade",
+      }
+    ),
+    refSwapPoolAddr: text("ref_swap_pool_addr").references(
+      () => swapPools.address,
+      { onDelete: "cascade" }
+    ),
+    // Metadata
+    metadata: text("metadata"), // JSON string for additional data
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    readAt: timestamp("read_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    // Indexes for common queries
+    uniqueIndex("idx_notifications_recipient_created").on(
+      t.recipientAddr,
+      t.createdAt
+    ),
+    uniqueIndex("idx_notifications_recipient_status").on(
+      t.recipientAddr,
+      t.status
+    ),
+    uniqueIndex("idx_notifications_kind_created").on(t.kind, t.createdAt),
   ]
 );
