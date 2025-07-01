@@ -157,6 +157,22 @@ export const vouchers = pgTable("vouchers", {
     .defaultNow(),
 });
 
+export const voucherIssuers = pgTable("voucher_issuers", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  voucherAddress: text("voucher_addr")
+    .notNull()
+    .references(() => vouchers.address, { onDelete: "cascade" }),
+  issuerAddress: text("issuer_address")
+    .notNull()
+    .references(() => users.address, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 // ---------------------------------------------------------------
 // 4.  Offerings
 // ---------------------------------------------------------------
