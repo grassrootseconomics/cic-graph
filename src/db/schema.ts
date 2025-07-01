@@ -9,6 +9,7 @@ import {
   bigserial,
   boolean,
   integer,
+  numeric,
   pgEnum,
   pgTable,
   point,
@@ -34,6 +35,10 @@ export const genderKind = pgEnum("gender_kind", [
   "FEMALE",
   "OTHER",
   "UNSPECIFIED",
+]);
+export const swapPoolFiatDepositType = pgEnum("swap_pool_fiat_deposit_type", [
+  "FIAT_DEPOSIT",
+  "CRYPTO_DEPOSIT",
 ]);
 export const commodityKind = pgEnum("commodity_kind", ["GOOD", "SERVICE"]);
 export const frequencyKind = pgEnum("frequency_kind", [
@@ -423,3 +428,33 @@ export const notifications = pgTable(
     uniqueIndex("idx_notifications_kind_created").on(t.kind, t.createdAt),
   ]
 );
+
+// ---------------------------------------------------------------
+// 9.  Donations & Fiat Origins
+// ---------------------------------------------------------------
+export const fiatOrigins = pgTable("fiat_origins", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  donorEmail: text("donor_email"),
+  fiatReference: text("fiat_reference"),
+  fiatCurrency: varchar("fiat_currency", { length: 10 }),
+  fiatAmount: numeric("fiat_amount", { precision: 20, scale: 2 }),
+  conversionRate: numeric("conversion_rate", { precision: 20, scale: 8 }),
+  convertedTokenAddress: text("converted_token_address"),
+  convertedAmount: numeric("converted_amount", { precision: 38, scale: 18 }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const donations = pgTable("donations", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  txHash: text("tx_hash").unique(),
+  donorAddress: text("donor_address").notNull(),
+  tokenAddress: text("token_address").notNull(),
+  amount: numeric("amount", { precision: 38, scale: 18 }).notNull(),
+  fiatOriginId: integer("fiat_origin_id").references(() => fiatOrigins.id),
+  purpose: text("purpose"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
